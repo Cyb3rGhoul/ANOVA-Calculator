@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Two-Way ANOVA Calculator</title>
+    <link rel="stylesheet" href="twoAnova.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <h1>Two-Way ANOVA Calculator</h1>
+        <form id="anova-form">
+            <div class="form-group">
+                <label for="num-blocks">Number of Blocks:</label>
+                <input type="number" id="num-blocks" min="2" required>
+            </div>
+            <div class="form-group">
+                <label for="num-treatments">Number of Treatments:</label>
+                <input type="number" id="num-treatments" min="2" required>
+            </div>
+            <div id="data-inputs"></div>
+            <button type="button" onclick="calculateTwoWayANOVA()">Calculate ANOVA</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script src="twoWayANOVA.js"></script>
+</body>
+</html>

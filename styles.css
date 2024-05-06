@@ -1,0 +1,106 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  animation: background-animation 10s infinite linear;
+  /* Background animation */
+}
+
+@keyframes background-animation {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100px 50px;
+  }
+}
+
+.container {
+  max-width: 800px;
+  margin: 20px auto; /* Center horizontally and give some top margin */
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  /* Center buttons horizontally */
+  flex-wrap: wrap;
+}
+
+.anova-btn {
+  display: inline-block;
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  text-decoration: none;
+  margin: 10px;
+  transition: background-color 0.3s;
+}
+
+.anova-btn:hover {
+  background-color: #45a049;
+}
+
+.gif-container {
+    text-align: center; /* Center the GIF horizontally */
+    margin-top: 20px; /* Add some space between container and GIF */
+}
+
+.gif {
+    max-width: 50rem;
+    height: 17rem;
+}
+
+
+footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #e2e2e2;
+    color: #000000;
+    padding: 20px;
+    text-align: center;
+    box-sizing: border-box; /* Ensure padding is included in the width */
+    z-index: 999; /* Ensure the footer stays on top */
+}
+
+@media (max-width: 600px) {
+    footer {
+        position: fixed;
+    }
+}
+
+.social-links {
+  margin-top: 10px;
+}
+
+.social-links a {
+  color: #fff;
+  font-size: 24px;
+  margin: 0 10px;
+  transition: color 0.3s;
+}
+
+.social-links a:hover {
+  color: #4caf50;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+}
