@@ -47,6 +47,75 @@ function generateInputs() {
   }
 }
 
+function generateExcelSheet() {
+  const worksheet = XLSX.utils.json_to_sheet(
+    [
+      {
+        "Source of Variation": "Between Rows",
+        "Sum of Squares": blockSumOfSquares.toFixed(2),
+        DOF: dfBlock,
+        "Mean Square": meanSquareBlock.toFixed(2),
+        "Variation Ratio": fRatioBlock.toFixed(2),
+        "Table Value": "", // Add your F-table value here if available
+      },
+      {
+        "Source of Variation": "Between Columns",
+        "Sum of Squares": treatmentSumOfSquares.toFixed(2),
+        DOF: dfTreatment,
+        "Mean Square": meanSquareTreatment.toFixed(2),
+        "Variation Ratio": fRatioTreatment.toFixed(2),
+        "Table Value": "", // Add your F-table value here if available
+      },
+      {
+        "Source of Variation": "Error",
+        "Sum of Squares": errorSumOfSquares.toFixed(2),
+        DOF: dfError,
+        "Mean Square": meanSquareError.toFixed(2),
+        "Variation Ratio": "", // No variation ratio for Error
+        "Table Value": "", // No F-table value for Error
+      },
+      {
+        "Source of Variation": "Total",
+        "Sum of Squares": totalSumOfSquares.toFixed(2),
+        DOF: numBlocks * numTreatments - 1,
+        "Mean Square": "", // No mean square for Total
+        "Variation Ratio": "", // No variation ratio for Total
+        "Table Value": "", // No F-table value for Total
+      },
+    ],
+    {
+      header: [
+        "Source of Variation",
+        "Sum of Squares",
+        "DOF",
+        "Mean Square",
+        "Variation Ratio",
+        "Table Value",
+      ],
+      skipHeader: true,
+    }
+  );
+
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "ANOVA Results");
+
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  const excelData = new Blob([excelBuffer], {
+    type: "application/octet-stream",
+  });
+  const downloadUrl = URL.createObjectURL(excelData);
+
+  const downloadLink = document.createElement("a");
+  downloadLink.href = downloadUrl;
+  downloadLink.download = "anova_results.xlsx";
+  downloadLink.click();
+
+  // Revoke the temporary URL after the download is complete
+  setTimeout(() => {
+    URL.revokeObjectURL(downloadUrl);
+  }, 100);
+}
+
 function calculateTwoWayANOVA() {
   const numBlocks = parseInt(document.getElementById("num-blocks").value);
   const numTreatments = parseInt(
@@ -139,7 +208,153 @@ function calculateTwoWayANOVA() {
     2
   )}</p>`;
   result.innerHTML += `<p>F-Ratio (Block): ${fRatioBlock.toFixed(2)}</p>`;
+
+  const excelButton = document.createElement("button");
+    excelButton.textContent = "Generate Excel Sheet";
+    excelButton.onclick = generateExcelSheet;
+    result.appendChild(excelButton);
+
+    function generateExcelSheet() {
+      const worksheet = XLSX.utils.json_to_sheet(
+        [
+          {
+            "Source of Variation": "Between Rows",
+            "Sum of Squares": blockSumOfSquares.toFixed(2),
+            DOF: dfBlock,
+            "Mean Square": meanSquareBlock.toFixed(2),
+            "Variation Ratio": fRatioBlock.toFixed(2),
+            "Table Value": "", // Add your F-table value here if available
+          },
+          {
+            "Source of Variation": "Between Columns",
+            "Sum of Squares": treatmentSumOfSquares.toFixed(2),
+            DOF: dfTreatment,
+            "Mean Square": meanSquareTreatment.toFixed(2),
+            "Variation Ratio": fRatioTreatment.toFixed(2),
+            "Table Value": "", // Add your F-table value here if available
+          },
+          {
+            "Source of Variation": "Error",
+            "Sum of Squares": errorSumOfSquares.toFixed(2),
+            DOF: dfError,
+            "Mean Square": meanSquareError.toFixed(2),
+            "Variation Ratio": "", // No variation ratio for Error
+            "Table Value": "", // No F-table value for Error
+          },
+          {
+            "Source of Variation": "Total",
+            "Sum of Squares": totalSumOfSquares.toFixed(2),
+            DOF: numBlocks * numTreatments - 1,
+            "Mean Square": "", // No mean square for Total
+            "Variation Ratio": "", // No variation ratio for Total
+            "Table Value": "", // No F-table value for Total
+          },
+        ],
+        {
+          header: [
+            "Source of Variation",
+            "Sum of Squares",
+            "DOF",
+            "Mean Square",
+            "Variation Ratio",
+            "Table Value",
+          ],
+          skipHeader: false,
+        }
+      );
+
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "ANOVA Results");
+
+      const excelBuffer = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
+      const excelData = new Blob([excelBuffer], {
+        type: "application/octet-stream",
+      });
+      const downloadUrl = URL.createObjectURL(excelData);
+
+      const downloadLink = document.createElement("a");
+      downloadLink.href = downloadUrl;
+      downloadLink.download = "anova_results.xlsx";
+      downloadLink.click();
+
+      // Revoke the temporary URL after the download is complete
+      setTimeout(() => {
+        URL.revokeObjectURL(downloadUrl);
+      }, 100);
+    }
 }
+
+// function generateExcelSheet() {
+//   const worksheet = XLSX.utils.json_to_sheet(
+//     [
+//       {
+//         "Source of Variation": "Between Rows",
+//         "Sum of Squares": blockSumOfSquares.toFixed(2),
+//         DOF: dfBlock,
+//         "Mean Square": meanSquareBlock.toFixed(2),
+//         "Variation Ratio": fRatioBlock.toFixed(2),
+//         "Table Value": "", // Add your F-table value here if available
+//       },
+//       {
+//         "Source of Variation": "Between Columns",
+//         "Sum of Squares": treatmentSumOfSquares.toFixed(2),
+//         DOF: dfTreatment,
+//         "Mean Square": meanSquareTreatment.toFixed(2),
+//         "Variation Ratio": fRatioTreatment.toFixed(2),
+//         "Table Value": "", // Add your F-table value here if available
+//       },
+//       {
+//         "Source of Variation": "Error",
+//         "Sum of Squares": errorSumOfSquares.toFixed(2),
+//         DOF: dfError,
+//         "Mean Square": meanSquareError.toFixed(2),
+//         "Variation Ratio": "", // No variation ratio for Error
+//         "Table Value": "", // No F-table value for Error
+//       },
+//       {
+//         "Source of Variation": "Total",
+//         "Sum of Squares": totalSumOfSquares.toFixed(2),
+//         DOF: numBlocks * numTreatments - 1,
+//         "Mean Square": "", // No mean square for Total
+//         "Variation Ratio": "", // No variation ratio for Total
+//         "Table Value": "", // No F-table value for Total
+//       },
+//     ],
+//     {
+//       header: [
+//         "Source of Variation",
+//         "Sum of Squares",
+//         "DOF",
+//         "Mean Square",
+//         "Variation Ratio",
+//         "Table Value",
+//       ],
+//       skipHeader: true,
+//     }
+//   );
+
+//   const workbook = XLSX.utils.book_new();
+//   XLSX.utils.book_append_sheet(workbook, worksheet, "ANOVA Results");
+
+//   const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+//   const excelData = new Blob([excelBuffer], {
+//     type: "application/octet-stream",
+//   });
+//   const downloadUrl = URL.createObjectURL(excelData);
+
+//   const downloadLink = document.createElement("a");
+//   downloadLink.href = downloadUrl;
+//   downloadLink.download = "anova_results.xlsx";
+//   downloadLink.click();
+
+//   // Revoke the temporary URL after the download is complete
+//   setTimeout(() => {
+//     URL.revokeObjectURL(downloadUrl);
+//   }, 100);
+// }
 
 function generateInputs() {
   const numBlocks = parseInt(document.getElementById("num-blocks").value);
