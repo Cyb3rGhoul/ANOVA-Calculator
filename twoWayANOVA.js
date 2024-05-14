@@ -20,7 +20,7 @@ function generateInputs() {
     blockDiv.classList.add("form-group");
 
     const blockLabel = document.createElement("label");
-    blockLabel.textContent = `Block ${i + 1}:`;
+    blockLabel.textContent = `Groups ${i + 1}:`;
     blockDiv.appendChild(blockLabel);
 
     const treatmentInputs = [];
@@ -30,7 +30,7 @@ function generateInputs() {
       inputDiv.classList.add("input-group");
 
       const label = document.createElement("label");
-      label.textContent = `Treatment ${j + 1}:`;
+      label.textContent = `Column ${j + 1}:`;
       inputDiv.appendChild(label);
 
       const input = document.createElement("input");
@@ -177,39 +177,85 @@ function calculateTwoWayANOVA() {
   const fRatioTreatment = meanSquareTreatment / meanSquareError;
   const fRatioBlock = meanSquareBlock / meanSquareError;
 
-  result.innerHTML += `<p>Correction Factor: ${correctionFactor.toFixed(
-    2
-  )}</p>`;
-  result.innerHTML += `<p>Total Sum of Squares: ${totalSumOfSquares.toFixed(
-    2
-  )}</p>`;
-  result.innerHTML += `<p>Treatment Sum of Squares: ${treatmentSumOfSquares.toFixed(
-    2
-  )}</p>`;
-  result.innerHTML += `<p>Block Sum of Squares: ${blockSumOfSquares.toFixed(
-    2
-  )}</p>`;
-  result.innerHTML += `<p>Error Sum of Squares: ${errorSumOfSquares.toFixed(
-    2
-  )}</p>`;
-  result.innerHTML += `<p>Degrees of Freedom (Treatment): ${dfTreatment}</p>`;
-  result.innerHTML += `<p>Degrees of Freedom (Block): ${dfBlock}</p>`;
-  result.innerHTML += `<p>Degrees of Freedom (Error): ${dfError}</p>`;
-  result.innerHTML += `<p>Mean Square (Treatment): ${meanSquareTreatment.toFixed(
-    2
-  )}</p>`;
-  result.innerHTML += `<p>Mean Square (Block): ${meanSquareBlock.toFixed(
-    2
-  )}</p>`;
-  result.innerHTML += `<p>Mean Square (Error): ${meanSquareError.toFixed(
-    2
-  )}</p>`;
-  result.innerHTML += `<p>F-Ratio (Treatment): ${fRatioTreatment.toFixed(
-    2
-  )}</p>`;
-  result.innerHTML += `<p>F-Ratio (Block): ${fRatioBlock.toFixed(2)}</p>`;
+  result.innerHTML += `<table border="1" cellpadding="5">
+    <tr>
+      <th>Source of Variation</th>
+      <th>Sum of Squares</th>
+      <th>DOF</th>
+      <th>Mean Square</th>
+      <th>Variation Ratio</th>
+      <th>Table Value (F)</th>
+    </tr>
+    <tr>
+      <td>Between Rows</td>
+      <td>${blockSumOfSquares.toFixed(2)}</td>
+      <td>${dfBlock}</td>
+      <td>${meanSquareBlock.toFixed(2)}</td>
+      <td>${fRatioBlock.toFixed(2)}</td>
+      <td><input type="number" id="f-table-block" step="0.01" required></td>
+    </tr>
+    <tr>
+      <td>Between Columns</td>
+      <td>${treatmentSumOfSquares.toFixed(2)}</td>
+      <td>${dfTreatment}</td>
+      <td>${meanSquareTreatment.toFixed(2)}</td>
+      <td>${fRatioTreatment.toFixed(2)}</td>
+      <td><input type="number" id="f-table-treatment" step="0.01" required></td>
+    </tr>
+    <tr>
+      <td>Error</td>
+      <td>${errorSumOfSquares.toFixed(2)}</td>
+      <td>${dfError}</td>
+      <td>${meanSquareError.toFixed(2)}</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Total</td>
+      <td>${totalSumOfSquares.toFixed(2)}</td>
+      <td>${numBlocks * numTreatments - 1}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>`;
 
-  const excelButton = document.createElement("button");
+  const calculateButton = document.createElement("button");
+  calculateButton.textContent = "Calculate Conclusion";
+  calculateButton.onclick = function () {
+    checkHypothesis(fRatioBlock, fRatioTreatment);
+  };
+  result.appendChild(calculateButton);
+
+  function checkHypothesis(fRatioBlock, fRatioTreatment) {
+    const fTableBlock = parseFloat(
+      document.getElementById("f-table-block").value
+    );
+    const fTableTreatment = parseFloat(
+      document.getElementById("f-table-treatment").value
+    );
+
+    const result = document.getElementById("result");
+
+    result.innerHTML += "<p>Conclusion:</p>";
+
+    if (fRatioBlock > fTableBlock) {
+      result.innerHTML +=
+        "<p>Null hypothesis for rows (Groups) is rejected.</p>";
+    } else {
+      result.innerHTML +=
+        "<p>Null hypothesis for rows (Groups) is accepted.</p>";
+    }
+
+    if (fRatioTreatment > fTableTreatment) {
+      result.innerHTML +=
+        "<p>Null hypothesis for columns (Columns) is rejected.</p>";
+    } else {
+      result.innerHTML +=
+        "<p>Null hypothesis for columns (Columns) is accepted.</p>";
+    }
+
+    const excelButton = document.createElement("button");
     excelButton.textContent = "Generate Excel Sheet";
     excelButton.onclick = generateExcelSheet;
     result.appendChild(excelButton);
@@ -285,6 +331,7 @@ function calculateTwoWayANOVA() {
         URL.revokeObjectURL(downloadUrl);
       }, 100);
     }
+  }
 }
 
 // function generateExcelSheet() {

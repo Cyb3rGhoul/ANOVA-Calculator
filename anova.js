@@ -53,28 +53,46 @@ function calculateANOVA() {
   const meanSquareBetween = treatmentSumOfSquares / dfBetween;
   const meanSquareWithin = errorSumOfSquares / dfWithin;
   const fRatio = meanSquareBetween / meanSquareWithin;
-  result.innerHTML += `<p>Correction Factor: ${correctionFactor.toFixed(
-    2
-  )}</p>`;
-  result.innerHTML += `<p>Total Sum of Squares: ${totalSumOfSquares.toFixed(
-    2
-  )}</p>`;
-  result.innerHTML += `<p>Treatment Sum of Squares: ${treatmentSumOfSquares.toFixed(
-    2
-  )}</p>`;
-  result.innerHTML += `<p>Error Sum of Squares: ${errorSumOfSquares.toFixed(
-    2
-  )}</p>`;
-  result.innerHTML += `<p>Degrees of Freedom (Between): ${dfBetween}</p>`;
-  result.innerHTML += `<p>Degrees of Freedom (Within): ${dfWithin}</p>`;
-  result.innerHTML += `<p>Mean Square Between: ${meanSquareBetween.toFixed(
-    2
-  )}</p>`;
-  result.innerHTML += `<p>Mean Square Within: ${meanSquareWithin.toFixed(
-    2
-  )}</p>`;
-  result.innerHTML += `<p>F-Ratio: ${fRatio.toFixed(2)}</p>`;
-  result.innerHTML += `<p>F-Critical: ${fCritical.toFixed(2)}</p>`;
+   const table = document.createElement("table");
+   table.innerHTML = `
+    <tr>
+      <th>Source of Variation</th>
+      <th>Sum of Squares</th>
+      <th>DOF</th>
+      <th>Mean Square</th>
+      <th>Variation Ratio</th>
+      <th>Table Value</th>
+    </tr>
+    <tr>
+      <td>Between Samples</td>
+      <td>${treatmentSumOfSquares.toFixed(2)}</td>
+      <td>${dfBetween}</td>
+      <td>${meanSquareBetween.toFixed(2)}</td>
+      <td>${fRatio.toFixed(2)}</td>
+      <td>${fCritical.toFixed(2)}</td>
+    </tr>
+    <tr>
+      <td>Within Samples</td>
+      <td>${errorSumOfSquares.toFixed(2)}</td>
+      <td>${dfWithin}</td>
+      <td>${meanSquareWithin.toFixed(2)}</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Total</td>
+      <td>${totalSumOfSquares.toFixed(2)}</td>
+      <td>${n - 1}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  `;
+   table.classList.add("anova-table");
+   const tableContainer = document.createElement("div");
+   tableContainer.classList.add("table-container");
+   tableContainer.appendChild(table);
+   result.appendChild(tableContainer);
 
   // Add conclusion statement
   const conclusion =

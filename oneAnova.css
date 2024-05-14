@@ -61,6 +61,25 @@ button:hover {
     font-size: 16px;
 }
 
+.table-container {
+  overflow-x: auto;
+}
+
+.anova-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.anova-table th, .anova-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.anova-table th {
+  background-color: #f2f2f2;
+}
+
 @media (max-width: 600px) {
     .container {
         padding: 10px;
