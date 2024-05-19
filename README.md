@@ -1,6 +1,6 @@
 # ANOVA Calculator
 
-![ANOVA Calculator](anova-calculator.png)
+![ANOVA Calculator](https://github.com/Cyb3rGhoul/ANOVA-Calculator/blob/main/1.png?raw=true)
 
 The ANOVA Calculator is a web-based application that performs analysis of variance (ANOVA) calculations for both one-way and two-way ANOVA tests. It provides a user-friendly interface for entering data and displays the results, including the sum of squares, degrees of freedom, mean squares, F-ratios, and critical F-values.
 
@@ -11,6 +11,13 @@ The ANOVA Calculator is a web-based application that performs analysis of varian
 - Dynamic input fields for entering data based on the number of groups or blocks and treatments.
 - Calculation of correction factor, sum of squares (total, treatment, block, and error), degrees of freedom, mean squares, and F-ratios.
 - Display of critical F-value (user-provided or calculated based on the level of significance).
+
+<div align="center">
+  <img src="https://github.com/Cyb3rGhoul/ANOVA-Calculator/blob/main/2.png?raw=true" alt="ANOVA Calculator" width="400">
+  <img src="https://github.com/Cyb3rGhoul/ANOVA-Calculator/blob/main/3.png?raw=true" alt="Another Image" width="400">
+  <img src="https://github.com/Cyb3rGhoul/ANOVA-Calculator/blob/main/4.png?raw=true" alt="Another Image" width="400">
+  <img src="https://github.com/Cyb3rGhoul/ANOVA-Calculator/blob/main/5.png?raw=true" alt="Third Image" width="400">
+</div>
 
 ## Usage
 
